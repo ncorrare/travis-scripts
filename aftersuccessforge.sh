@@ -8,7 +8,7 @@ export GIT_COMMITTER_EMAIL='travis@travis'
 export GIT_COMMITTER_NAME='Travis CI'
 
 # I just want to do one merge, so I'm checking I'm running in the right Travis Job (Environment)
-if "$PUPPET_GEM_VERSION"=="~> 4.3"; then
+if [ "$PUPPET_GEM_VERSION" = "~> 4.3"]; then
 	if ! grep -q "$BRANCHES_TO_MERGE_REGEX" <<< "$TRAVIS_BRANCH"; then
 	    	printf "Current branch %s doesn't match regex %s, exiting\\n" \
 		            "$TRAVIS_BRANCH" "$BRANCHES_TO_MERGE_REGEX" >&2
@@ -36,7 +36,7 @@ if "$PUPPET_GEM_VERSION"=="~> 4.3"; then
 	git push "$push_uri" "$BRANCH_TO_MERGE_INTO" >/dev/null 2>&1
 	git push "$push_uri" :"$TRAVIS_BRANCH" >/dev/null 2>&1
 	
-	if "$PUPPET_GEM_VERSION"=="~> 4.3" && $DEPLOY=="true"; then
+	if [ $PUPPET_GEM_VERSION = "~> 4.3" ] && [ $DEPLOY = "true" ]; then
 		printf "Pushing module to the Puppet Forge\n"
 		rake module:release
 	fi
