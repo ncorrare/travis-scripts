@@ -1,7 +1,7 @@
 ---
 language: bash
 # Test everything
-script: "find . -iname *.sh -exec bash -n {} \;"
+script: 'find . -iname *.sh -exec bash -n {} \;'
 # Send me an email when done
 notifications:
   email: nicolas@corrarello.com
