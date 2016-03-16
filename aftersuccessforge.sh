@@ -22,9 +22,10 @@ if [ "$PUPPET_GEM_VERSION" = "= 4.3" ]; then
 	printf "SHA of the Commit is $SHA\n"
 	printf "Merging PR# $TRAVIS_PULL_REQUEST with message $MESSAGE\n"
 	MERGE=$(curl -X PUT --data "{\"commit_message\":\"$MESSAGE\",\"sha\":\"$SHA\"}" https://$GITHUB_SECRET_TOKEN@api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST/merge | jq -r .merged)
-	printf "Merge status is $MERGE"
+	printf "Merge status is $MERGE\n"
 	if [ $MERGE = true ]; then
-		printf "go and deploy to $BLACKSMITH_FORGE_URL"
+		printf "go and deploy to $BLACKSMITH_FORGE_URL on $BLACKSMITH_FORGE_USERNAME's account \n"
+		echo -e "---\nurl: $BLACKSMITH_FORGE_URL\nusername: $BLACKSMITH_FORGE_USERNAME\npassword: $BLACKSMITH_FORGE_PASSWORD" > ~/.puppetforge.yml
 		repo_temp=$(mktemp -d)
 		cd "$repo_temp"
 		git clone https://$GITHUB_SECRET_TOKEK@github.com/$TRAVIS_REPO_SLUG.git "$repo_temp"
