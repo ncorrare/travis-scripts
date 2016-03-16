@@ -27,7 +27,7 @@ if [ "$PUPPET_VERSION" = "~> 4.3.0" ]; then
 		if [ -f ~/.puppetforge.yml ]; then
 			repo_temp=$(mktemp -d)
 			cd "$repo_temp"
-			git clone https://$GITHUB_SECRET_TOKEK@github.com/$TRAVIS_REPO_SLUG.git "$repo_temp"
+			git clone https://$GITHUB_SECRET_TOKEN@github.com/$TRAVIS_REPO_SLUG.git "$repo_temp"
 			git config --global user.email "blacksmith@corrarello.com"
 			git config --global user.name "Travis Blacksmith Automation"
 			rake module:bump_commit
