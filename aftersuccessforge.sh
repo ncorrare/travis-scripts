@@ -26,9 +26,11 @@ if [ "$PUPPET_GEM_VERSION" = "~> 4.3" ]; then
 	if [ $MERGE = true ]; then
 		printf "go and deploy to $BLACKSMITH_FORGE_URL on $BLACKSMITH_FORGE_USERNAME's account \n"
 		echo -e "---\nurl: $BLACKSMITH_FORGE_URL\nusername: $BLACKSMITH_FORGE_USERNAME\npassword: $BLACKSMITH_FORGE_PASSWORD" > ~/.puppetforge.yml
-		repo_temp=$(mktemp -d)
-		cd "$repo_temp"
-		git clone https://$GITHUB_SECRET_TOKEK@github.com/$TRAVIS_REPO_SLUG.git "$repo_temp"
-		rake module:release
+		if [ -f ~/.puppetforge.yml ]; then
+			repo_temp=$(mktemp -d)
+			cd "$repo_temp"
+			git clone https://$GITHUB_SECRET_TOKEK@github.com/$TRAVIS_REPO_SLUG.git "$repo_temp"
+			rake module:release
+		fi
 	fi
 fi
