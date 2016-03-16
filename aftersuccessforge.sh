@@ -3,8 +3,6 @@
 
 : "${GITHUB_SECRET_TOKEN?}"
 
-export GIT_COMMITTER_EMAIL='travis@travis'
-export GIT_COMMITTER_NAME='Travis CI'
 export BLACKSMITH_FORGE_URL
 export BLACKSMITH_FORGE_USERNAME
 export BLACKSMITH_FORGE_PASSWORD
@@ -30,6 +28,8 @@ if [ "$PUPPET_VERSION" = "~> 4.3.0" ]; then
 			repo_temp=$(mktemp -d)
 			cd "$repo_temp"
 			git clone https://$GITHUB_SECRET_TOKEK@github.com/$TRAVIS_REPO_SLUG.git "$repo_temp"
+			git config --global user.email "blacksmith@corrarello.com"
+			git config --global user.name "Travis Blacksmith Automation"
 			rake module:bump_commit
 			rake module:tag
 			git push origin master --tags
