@@ -15,7 +15,7 @@ if [ "$PUPPET_GEM_VERSION" = "~> 4.3" ]; then
 	        exit 0
 	fi
 
-	MERGE = $(curl -vv -X PUT --data "{\"commit_message\":\"$MESSAGE\",\"sha\":\"$SHA\"}" https://$GITHUB_SECRET_TOKEN@api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST/merge | jq -r .merged)
+	MERGE=$(curl -X PUT --data "{\"commit_message\":\"$MESSAGE\",\"sha\":\"$SHA\"}" https://$GITHUB_SECRET_TOKEN@api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST/merge | jq -r .merged)
 	if [ $MERGE = true ]; then
 		printf "go and deploy stuff"
 	fi
