@@ -30,7 +30,10 @@ if [ "$PUPPET_VERSION" = "~> 4.3" ]; then
 			repo_temp=$(mktemp -d)
 			cd "$repo_temp"
 			git clone https://$GITHUB_SECRET_TOKEK@github.com/$TRAVIS_REPO_SLUG.git "$repo_temp"
-			rake module:release
+			rake module:bump_commit
+			rake module:tag
+			git push origin master --tags
+			rake module:push
 		fi
 	fi
 fi
