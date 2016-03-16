@@ -21,6 +21,10 @@ if [ "$PUPPET_GEM_VERSION" = "~> 4.3" ]; then
 	printf "Merge status is $MERGE"
 	if [ $MERGE = true ]; then
 		printf "go and deploy stuff"
+		echo "---
+		url: $BLACKSMITH_FORGE_URL
+		username: $BLACKSMITH_FORGE_USERNAME
+		password: $BLACKSMITH_FORGE_PASSWORD" > ~/.puppetforge.yml
 		repo_temp=$(mktemp -d)
 		cd "$repo_temp"
 		git clone https://$GITHUB_SECRET_TOKEK@github.com/$TRAVIS_REPO_SLUG.git "$repo_temp"
