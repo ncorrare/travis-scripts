@@ -13,7 +13,7 @@ export BLACKSMITH_FORGE_PASSWORD
 export SHA=$(curl https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST |jq -r .head.sha)
 export MESSAGE="Merged automatically by Travis CI. Full testing details on https://travis-ci.org/$TRAVIS_REPO_SLUG/jobs/$TRAVIS_BUILD_ID"
 # I just want to do one merge, so I'm checking I'm running in the right Travis Job (Environment)
-if [ "$PUPPET_VERSION" = "~> 4.3" ]; then
+if [ "$PUPPET_VERSION" = "~> 4.3.0" ]; then
 	if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
 	    	printf "This is not a Pull Request, I won't be deploying this. Exiting\\n"
 	        exit 0
