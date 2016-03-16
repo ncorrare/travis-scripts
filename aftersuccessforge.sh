@@ -1,7 +1,6 @@
 #!/bin/bash -e
 # Based on Chris Down's travis-automerge script (https://github.com/cdown/travis-automerge)
 
-: "${BRANCHES_TO_MERGE_REGEX?}" "${BRANCH_TO_MERGE_INTO?}"
 : "${GITHUB_SECRET_TOKEN?}" "${GITHUB_REPO?}"
 
 export GIT_COMMITTER_EMAIL='travis@travis'
