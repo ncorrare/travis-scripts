@@ -9,8 +9,8 @@ export GIT_COMMITTER_NAME='Travis CI'
 
 # I just want to do one merge, so I'm checking I'm running in the right Travis Job (Environment)
 if [ "$PUPPET_GEM_VERSION" = "~> 4.3" ]; then
-	if ! grep -q "$BRANCHES_TO_MERGE_REGEX" <<< "$TRAVIS_BRANCH"; then
-	    	printf "Current branch %s doesn't match regex %s, exiting\\n" \
+	if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
+	    	printf "This is not a Pull Request, I won't be deploying this. Exiting\\n" \
 		            "$TRAVIS_BRANCH" "$BRANCHES_TO_MERGE_REGEX" >&2
 	        exit 0
 	fi
