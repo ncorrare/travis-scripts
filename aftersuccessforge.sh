@@ -24,7 +24,7 @@ if [ "$PUPPET_GEM_VERSION" = "= 4.3" ]; then
 	MERGE=$(curl -X PUT --data "{\"commit_message\":\"$MESSAGE\",\"sha\":\"$SHA\"}" https://$GITHUB_SECRET_TOKEN@api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST/merge | jq -r .merged)
 	printf "Merge status is $MERGE"
 	if [ $MERGE = true ]; then
-		printf "go and deploy stuff"
+		printf "go and deploy to $BLACKSMITH_FORGE_URL"
 		repo_temp=$(mktemp -d)
 		cd "$repo_temp"
 		git clone https://$GITHUB_SECRET_TOKEK@github.com/$TRAVIS_REPO_SLUG.git "$repo_temp"
