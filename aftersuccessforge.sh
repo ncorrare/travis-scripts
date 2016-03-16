@@ -6,7 +6,7 @@
 export GIT_COMMITTER_EMAIL='travis@travis'
 export GIT_COMMITTER_NAME='Travis CI'
 
-export SHA=$(curl https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST |jq -r .base.sha)
+export SHA=$(curl https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST |jq -r .head.sha)
 export MESSAGE="Merged automatically by Travis CI. Full testing details on https://travis-ci.org/$TRAVIS_REPO_SLUG/jobs/$TRAVIS_BUILD_ID"
 # I just want to do one merge, so I'm checking I'm running in the right Travis Job (Environment)
 if [ "$PUPPET_GEM_VERSION" = "~> 4.3" ]; then
