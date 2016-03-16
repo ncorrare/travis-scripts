@@ -1,7 +1,7 @@
 #!/bin/bash -e
 # Based on Chris Down's travis-automerge script (https://github.com/cdown/travis-automerge)
 
-: "${GITHUB_SECRET_TOKEN?}" "${GITHUB_REPO?}"
+: "${GITHUB_SECRET_TOKEN?}"
 
 export GIT_COMMITTER_EMAIL='travis@travis'
 export GIT_COMMITTER_NAME='Travis CI'
@@ -11,8 +11,7 @@ export MESSAGE = "Merged automatically by Travis CI. Full testing details on htt
 # I just want to do one merge, so I'm checking I'm running in the right Travis Job (Environment)
 if [ "$PUPPET_GEM_VERSION" = "~> 4.3" ]; then
 	if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then
-	    	printf "This is not a Pull Request, I won't be deploying this. Exiting\\n" \
-		            "$TRAVIS_BRANCH" "$BRANCHES_TO_MERGE_REGEX" >&2
+	    	printf "This is not a Pull Request, I won't be deploying this. Exiting\\n"
 	        exit 0
 	fi
 
