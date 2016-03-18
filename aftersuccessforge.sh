@@ -19,7 +19,12 @@ if [ "$PUPPET_VERSION" = "~> 4.3.0" ]; then
 
 	printf "SHA of the Commit is $SHA\n"
 	printf "Merging PR# $TRAVIS_PULL_REQUEST with message $MESSAGE\n"
-	MERGE=$(curl -X PUT --data "{\"commit_message\":\"$MESSAGE\",\"sha\":\"$SHA\"}" https://$GITHUB_SECRET_TOKEN@api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST/merge | jq -r .merged)
+	if [ $SHA != null ] || [ -z $SHA ]; then
+		curl -X PUT --data "{\"commit_message\":\"$MESSAGE\",\"sha\":\"$SHA\"}" https://$GITHUB_SECRET_TOKEN@api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST/merge > /tmp/PR-result
+		MERGE=$(cat /tmp/PR-result | jq -r .merged)
+	else
+		exit 0
+	fi
 	printf "Merge status is $MERGE\n"
 	if [ $MERGE = true ]; then
 		printf "go and deploy to $BLACKSMITH_FORGE_URL on $BLACKSMITH_FORGE_USERNAME's account \n"
@@ -28,12 +33,29 @@ if [ "$PUPPET_VERSION" = "~> 4.3.0" ]; then
 			repo_temp=$(mktemp -d)
 			cd "$repo_temp"
 			git clone https://$GITHUB_SECRET_TOKEN@github.com/$TRAVIS_REPO_SLUG.git "$repo_temp"
-			git config --global user.email "blacksmith@corrarello.com"
-			git config --global user.name "Travis Blacksmith Automation"
-			rake module:bump_commit
-			rake module:tag
-			git push origin master --tags
-			rake module:push
+			if [ -f $repo_temp/metadata.json ]; then
+				git config --global user.email "blacksmith@corrarello.com"
+				git config --global user.name "Travis Blacksmith Automation"
+				if $(rake module:bump_commit); then
+					if $(rake module:tag); then
+						if $(git push origin master --tags); then
+							rake module:push
+						else
+							echo "Wasn't able to push tagged version to Github"
+						fi
+					else
+						echo "Wasn't able to tag module"
+					fi
+				else
+					echo "Wasn't able to bump module version"
+				fi
+			else
+				echo "Module repository wasn't properly cloned"
+			fi
+		echo "Configuration file doesn't exist"
 		fi
+	else
+		echo "Unable to merge PR: \n"
+		cat /tmp/PR-result | jq -r .message
 	fi
 fi
