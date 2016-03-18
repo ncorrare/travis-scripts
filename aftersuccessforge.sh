@@ -55,7 +55,8 @@ if [ "$PUPPET_VERSION" = "~> 4.3.0" ]; then
 			else
 				echo "Module repository wasn't properly cloned"
 			fi
-		echo "Configuration file doesn't exist"
+		else
+			echo "Configuration file doesn't exist"
 		fi
 	else
 		echo "Unable to merge PR: \n"
