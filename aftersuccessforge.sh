@@ -36,9 +36,12 @@ if [ "$PUPPET_VERSION" = "~> 4.3.0" ]; then
 			if [ -f $repo_temp/metadata.json ]; then
 				git config --global user.email "blacksmith@corrarello.com"
 				git config --global user.name "Travis Blacksmith Automation"
-				if $(rake module:bump_commit); then
-					if $(rake module:tag); then
-						if $(git push origin master --tags); then
+				rake module:bump_commit
+				if [ $? -eq 0 ]; then
+					rake module:tag
+					if [ $? -eq 0 ]; then
+						git push origin master --tags
+						if [ $? -eq 0 ]; then
 							rake module:push
 						else
 							echo "Wasn't able to push tagged version to Github"
