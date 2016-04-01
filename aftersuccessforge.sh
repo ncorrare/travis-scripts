@@ -40,7 +40,7 @@ if [ "$PUPPET_VERSION" = "~> 4.3.0" ]; then
 				if [ $? -eq 0 ]; then
 					rake module:tag
 					if [ $? -eq 0 ]; then
-						git push origin master --tags
+						git push origin master --tags &> /dev/null
 						if [ $? -eq 0 ]; then
 							rake module:push
 						else
